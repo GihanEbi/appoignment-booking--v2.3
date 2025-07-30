@@ -40,7 +40,7 @@ export async function POST(req: Request) {
   try {
     await appointment[0].save();
     //  delete the n8n_chat_history
-    await n8nChatHistoryModel.deleteMany({ phoneNo: phoneNo });
+    await n8nChatHistoryModel.deleteOne({ sessionId: phoneNo });
     return NextResponse.json(
       {
         success: true,
