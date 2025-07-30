@@ -44,7 +44,7 @@ const page = () => {
           <Loader size={40} className="text-blue-500" />
         </div>
       )}
-      <div className="text-lg font-bold">Ongoing Appointments</div>
+      <div className="text-lg font-bold">Cancelled Appointments</div>
       {/* <div className="flex-col space-x-4 mt-5 sm:flex-row xs:justify-center"> */}
       <div className="flex justify-center w-full mt-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-4 ml-7">
