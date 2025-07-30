@@ -2,7 +2,7 @@
 
 import AppointmentCard from "@/components/AppointmentCard/AppointmentCard";
 import { Loader } from "@/components/Loader/Loader";
-import { get_appointment_by_user_id } from "@/routes/appointment/appointmentRoutes";
+import { get_ongoing_appointment_by_user_id } from "@/routes/appointment/appointmentRoutes";
 import React, { useEffect } from "react";
 
 const page = () => {
@@ -23,7 +23,7 @@ const page = () => {
       setLoading(true);
       console.log("Fetching appointments...");
 
-      const data = await get_appointment_by_user_id();
+      const data = await get_ongoing_appointment_by_user_id();
       if (data.success) {
         setAppointments(data.data);
         console.log("Appointments fetched successfully:", data.data);
