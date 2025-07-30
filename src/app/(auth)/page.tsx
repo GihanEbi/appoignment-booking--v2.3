@@ -37,7 +37,7 @@ const page = () => {
       if (data.success) {
         saveToken(data.data.token);
         // Redirect to user dashboard or home page after successful login
-        router.push("/user/my_details");
+        router.push("/user/appointments/ongoing_appointments");
       } else {
         console.log("Error:", data.message);
       }
