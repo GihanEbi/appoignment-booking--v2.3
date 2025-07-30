@@ -1,14 +1,14 @@
-import { NextResponse } from "next/server";
-
 // -------------services-----------------
+import { CheckUserAccess } from "@/services/auth-services/auth-service";
 import { connectDB } from "../../../../../lib/db";
+import { NextResponse } from "next/server";
 import AppointmentModel from "../../../../../models/appointmentModel";
 
 export async function POST(req: Request) {
   const { phoneNo } = await req.json();
 
   //   no token authentication
-  // appointment will created by webhook in n8n
+  // appointment will checked by webhook in n8n
   //   --------- connect to database -----------
   await connectDB();
   // ------------ Check if phoneNo is provided -----------
@@ -20,14 +20,15 @@ export async function POST(req: Request) {
   }
   // ------------ Check if appointment exists -----------
   const appointment = await AppointmentModel.find({ phoneNo: phoneNo });
-  if (!appointment || appointment.length === 0) {
-    return NextResponse.json(
-      { success: true, message: "No appointment in this number" },
-      { status: 200 }
-    );
+  // if appointment available
+  // return appointment data
+  if (appointment && appointment.length > 0) {
+    return NextResponse.json({ data: appointment[0] }, { status: 200 });
   } else {
     return NextResponse.json(
-      { success: false, message: "Already have an appointment" },
+      {
+        data: "No ongoing appointment found for this phone number",
+      },
       { status: 200 }
     );
   }
