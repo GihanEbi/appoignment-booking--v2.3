@@ -13,9 +13,41 @@ type User = {
 };
 
 const AppointmentCard = ({ appointment }: { appointment: User }) => {
+  const formatDateWithTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "long" });
+    const year = date.getFullYear();
+
+    const getOrdinal = (n: number) => {
+      if (n > 3 && n < 21) return "th";
+      switch (n % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    };
+
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const isPM = hours >= 12;
+    hours = hours % 12 || 12;
+    const period = isPM ? "PM" : "AM";
+
+    return `${day}${getOrdinal(
+      day
+    )} ${month} ${year} - ${hours}:${minutes} ${period}`;
+  };
+
   return (
-    <div>
-      <div className="flex flex-col mb-4 rounded-lg border border-gray-200 bg-white p-4">
+    <div className="group flex flex-col h-full bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 font-[var(--font-geist-mono)]">
+      {/* <div className="flex flex-col mb-4 rounded-lg border border-gray-200 bg-white p-4"> */}
+      <div className="p-4 md:p-5 flex flex-col flex-grow">
         <div className="flex justify-between items-center mb-6">
           <div className="text-md font-semibold text-gray-800">
             ID: {appointment.ID}
@@ -24,25 +56,30 @@ const AppointmentCard = ({ appointment }: { appointment: User }) => {
             {appointment.appointmentStatus}
           </div>
         </div>
-        <div className="flex flex-col space-y-1">
-          <div className="text-sm text-gray-600">
-            Customer Name: {appointment.customerName}
+        <div className="flex flex-col space-y-2">
+          <div className="text-sm text-gray-600 font-semibold">
+            Customer Name:{" "} <span className="text-sm text-black font-normal">
+              {appointment.customerName}
+              </span> 
           </div>
-          <p className="text-sm text-gray-600">
-            Service: {appointment.service}
+          <p className="text-sm text-gray-600 font-semibold">
+            Service:{" "} <span className="text-sm text-black font-normal">{appointment.service}
+              </span> 
           </p>
 
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 font-semibold">
             Start Time:{" "}
-            {new Date(appointment.appointmentStartTime).toLocaleString()}
+            {/* {new Date(appointment.appointmentStartTime).toLocaleString()} */}
+            <span className="text-sm text-black font-normal">{formatDateWithTime(appointment.appointmentStartTime)}</span>
           </p>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 font-semibold">
             End Time:{" "}
-            {new Date(appointment.appointmentEndTime).toLocaleString()}
+            {/* {new Date(appointment.appointmentEndTime).toLocaleString()} */}
+            <span className="text-sm text-black font-normal">{formatDateWithTime(appointment.appointmentEndTime)}</span>
           </p>
         </div>
         <div>
-          <button className="mt-4 w-full rounded-lg bg-blue-500 py-2 text-white">
+          <button className="mt-8 w-full rounded-lg bg-blue-500 py-2 text-white">
             Complete
           </button>
         </div>
