@@ -1,4 +1,5 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+"use client";
+import { Calendar, Home, Inbox, LogOut, Search, Settings } from "lucide-react";
 
 import {
   Sidebar,
@@ -10,6 +11,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { removeToken } from "@/utils/auth-utils";
+import { useRouter } from "next/navigation";
 
 // Menu items.
 const items = [
@@ -31,6 +34,11 @@ const items = [
 ];
 
 export function AppSidebar() {
+  const router = useRouter();
+  const handleSignOut = () => {
+    removeToken(); 
+    router.push("/"); 
+  };
   return (
     <Sidebar>
       <SidebarContent>
@@ -45,7 +53,9 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                     <a href={item.url}>
                       <item.icon />
-                      <span className="text-md font-semibold">{item.title}</span>
+                      <span className="text-md font-semibold">
+                        {item.title}
+                      </span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -53,6 +63,21 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <div className="mt-auto items-end justify-end">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                onClick={handleSignOut}
+                className="flex items-center mb-4"
+              >
+                <LogOut  className="text-red-500"/>
+                <span className="text-md font-semibold text-red-600">
+                  Sign Out
+                </span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </div>
       </SidebarContent>
     </Sidebar>
   );
