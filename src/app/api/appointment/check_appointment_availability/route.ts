@@ -15,7 +15,7 @@ export async function POST(req: Request) {
   if (!phoneNo || phoneNo.trim() === "") {
     return NextResponse.json(
       { success: false, message: "Phone number is required" },
-      { status: 400 },
+      { status: 400 }
     );
   }
   // ------------ Check if appointment exists -----------
@@ -23,15 +23,12 @@ export async function POST(req: Request) {
   if (!appointment || appointment.length === 0) {
     return NextResponse.json(
       { success: true, message: "No appointment in this number" },
-      { status: 200 },
+      { status: 200 }
     );
   } else {
     return NextResponse.json(
-      {
-        success: false,
-        message: "Appointment found",
-      },
-      { status: 400 },
+      { success: false, message: "Already have an appointment" },
+      { status: 200 }
     );
   }
 }
