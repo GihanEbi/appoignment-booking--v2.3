@@ -16,19 +16,24 @@ import { useRouter } from "next/navigation";
 
 // Menu items.
 const items = [
-  {
-    title: "My Details",
-    url: "/user/my_details",
-    icon: Home,
-  },
-  {
-    title: "All Appointments",
-    url: "/user/appointments/all_appointments",
-    icon: Calendar,
-  },
+  // {
+  //   title: "My Details",
+  //   url: "/user/my_details",
+  //   icon: Home,
+  // },
   {
     title: "Ongoing Appointments",
     url: "/user/appointments/ongoing_appointments",
+    icon: Calendar,
+  },
+  {
+    title: "Pending Appointments",
+    url: "/user/appointments/pending_appointments",
+    icon: Calendar,
+  },
+  {
+    title: "Cancelled Appointments",
+    url: "/user/appointments/cancelled_appointments",
     icon: Calendar,
   },
 ];

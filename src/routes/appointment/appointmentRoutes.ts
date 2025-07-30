@@ -14,9 +14,44 @@ type User = {
   service: string;
 };
 
-export async function get_appointment_by_user_id() {
+export async function get_ongoing_appointment_by_user_id() {
   try {
-    const res = await fetch(`${commonUrl}/get_appointment_by_user_id`, {
+    const res = await fetch(`${commonUrl}/get_ongoing_appointment_by_user_id`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: `${getToken()}`, // Uncomment if you need to send a token
+      },
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function get_cancelled_appointment_by_user_id() {
+  try {
+    const res = await fetch(
+      `${commonUrl}/get_cancelled_appointment_by_user_id`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          token: `${getToken()}`, // Uncomment if you need to send a token
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function get_pending_appointment_by_user_id() {
+  try {
+    const res = await fetch(`${commonUrl}/get_pending_appointment_by_user_id`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

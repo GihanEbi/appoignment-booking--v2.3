@@ -1,9 +1,11 @@
 // -------------services-----------------
-import { CheckUserAccess } from '@/services/auth-services/auth-service';
-import { connectDB } from '../../../../../lib/db';
-import appointmentModel from '../../../../../models/appointmentModel';
-import { access_levels } from '@/constants/access_constants';
-import { NextResponse } from 'next/server';
+import { CheckUserAccess } from "@/services/auth-services/auth-service";
+import { connectDB } from "../../../../../lib/db";
+import appointmentModel from "../../../../../models/appointmentModel";
+import { access_levels } from "@/constants/access_constants";
+import { NextResponse } from "next/server";
+import { appointment_constants } from "@/constants/appointment_constants";
+import allAppointmentModel from "../../../../../models/allAppointmentModel";
 
 type isValidTokenTypes = {
   success: boolean;
@@ -15,10 +17,10 @@ type isValidTokenTypes = {
 
 export async function GET(req: Request) {
   // ----------- check if the token provided in headers -----------
-  const tokenString = req.headers.get('token');
+  const tokenString = req.headers.get("token");
   if (!tokenString) {
     return NextResponse.json(
-      { success: false, message: 'Token is required' },
+      { success: false, message: "Token is required" },
       { status: 401 }
     );
   }
@@ -28,13 +30,13 @@ export async function GET(req: Request) {
   );
   const isValidToken: isValidTokenTypes = {
     success: checkResult.success,
-    access: checkResult.access ?? '',
+    access: checkResult.access ?? "",
     userId: checkResult.userId,
   };
 
   if (!isValidToken.success) {
     return NextResponse.json(
-      { success: isValidToken.success, message: 'Unauthorized' },
+      { success: isValidToken.success, message: "Unauthorized" },
       { status: 403 }
     );
   }
@@ -47,22 +49,26 @@ export async function GET(req: Request) {
 
   if (!userId) {
     return NextResponse.json(
-      { success: false, message: 'User ID is required' },
+      { success: false, message: "User ID is required" },
       { status: 400 }
     );
   }
 
   try {
-    const appointments = await appointmentModel.find({ userId });
+    const appointments = await allAppointmentModel.find({
+      userId: userId,
+      appointmentStatus:
+        appointment_constants.APPOINTMENT_STATUS_OBJECT.cancelled_by_user,
+    });
 
     return NextResponse.json({
       success: true,
       data: appointments,
-      message: 'Appointments retrieved successfully',
+      message: "Appointments retrieved successfully",
     });
   } catch (error) {
     return NextResponse.json(
-      { success: false, message: 'Error retrieving appointments', error },
+      { success: false, message: "Error retrieving appointments", error },
       { status: 500 }
     );
   }
