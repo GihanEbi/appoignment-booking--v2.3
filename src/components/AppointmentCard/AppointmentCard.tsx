@@ -52,34 +52,41 @@ const AppointmentCard = ({ appointment }: { appointment: User }) => {
           <div className="text-md font-semibold text-gray-800">
             ID: {appointment.ID}
           </div>
-          <div className="text-sm bg-blue-500 pb-1 px-2 rounded-lg text-white">
+          <div className={`text-sm ${appointment.appointmentStatus === "confirmed" ? "bg-green-500" : appointment.appointmentStatus === "pending" ? "bg-yellow-500" : "bg-red-500"} pb-1 px-2 rounded-lg text-white`}>
             {appointment.appointmentStatus}
           </div>
         </div>
         <div className="flex flex-col space-y-2">
           <div className="text-sm text-gray-600 font-semibold">
-            Customer Name:{" "} <span className="text-sm text-black font-normal">
+            Customer Name:{" "}
+            <span className="text-sm text-black font-normal">
               {appointment.customerName}
-              </span> 
+            </span>
           </div>
           <p className="text-sm text-gray-600 font-semibold">
-            Service:{" "} <span className="text-sm text-black font-normal">{appointment.service}
-              </span> 
+            Service:{" "}
+            <span className="text-sm text-black font-normal">
+              {appointment.service}
+            </span>
           </p>
 
           <p className="text-sm text-gray-600 font-semibold">
             Start Time:{" "}
             {/* {new Date(appointment.appointmentStartTime).toLocaleString()} */}
-            <span className="text-sm text-black font-normal">{formatDateWithTime(appointment.appointmentStartTime)}</span>
+            <span className="text-sm text-black font-normal">
+              {formatDateWithTime(appointment.appointmentStartTime)}
+            </span>
           </p>
           <p className="text-sm text-gray-600 font-semibold">
             End Time:{" "}
             {/* {new Date(appointment.appointmentEndTime).toLocaleString()} */}
-            <span className="text-sm text-black font-normal">{formatDateWithTime(appointment.appointmentEndTime)}</span>
+            <span className="text-sm text-black font-normal">
+              {formatDateWithTime(appointment.appointmentEndTime)}
+            </span>
           </p>
         </div>
         <div>
-          <button className="mt-8 w-full rounded-lg bg-blue-500 py-2 text-white">
+          <button className="cursor-pointer mt-8 w-full rounded-lg bg-blue-100 py-2 text-blue-700 font-semibold transition-colors hover:bg-blue-200">
             Complete
           </button>
         </div>
