@@ -11,6 +11,11 @@ export const access_levels = {
   UploadFile: "RU00007",
   // user access levels
   AddUser: "RU00008",
+  GetUsers: "RU00009",
+  EditUser: "RU00010",
   // appointment access levels
-  GetAppointmentByUserId: "RU00009",
+  GetAppointmentByUserId: "RU00011",
+  CompleteAppointment: "RU00012",
+  CancelAppointment: "RU00013",
+  GetChatHistory: "RU00014",
 };
