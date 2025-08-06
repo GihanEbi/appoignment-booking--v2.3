@@ -1,9 +1,8 @@
 "use client";
 
 import { Loader } from "@/components/Loader/Loader";
-import { get_ongoing_appointment_by_user_id } from "@/routes/appointment/appointmentRoutes";
+import { get_completed_appointment_by_user_id } from "@/routes/appointment/appointmentRoutes";
 import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 type Appointment = {
   ID: string;
@@ -18,9 +17,8 @@ type Appointment = {
 };
 
 const page = () => {
-  const router = useRouter();
   // state for backend data
-  const [appointments, setAppointments] = React.useState<Appointment[]>([]);
+  const [appointments, setAppointments] = React.useState([]);
   // state for loading
   const [loading, setLoading] = React.useState(false);
 
@@ -36,7 +34,7 @@ const page = () => {
       setLoading(true);
       console.log("Fetching appointments...");
 
-      const data = await get_ongoing_appointment_by_user_id();
+      const data = await get_completed_appointment_by_user_id();
       if (data.success) {
         setAppointments(data.data);
         console.log("Appointments fetched successfully:", data.data);
@@ -89,7 +87,7 @@ const page = () => {
             <Loader size={40} className="text-blue-500" />
           </div>
         )}
-        <div className="text-lg font-bold">Ongoing Appointments</div>
+        <div className="text-lg font-bold">Completed Appointments</div>
         {/* <div className="flex-col space-x-4 mt-5 sm:flex-row xs:justify-center"> */}
         <div className="flex justify-center w-full mt-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-4 ml-7">
@@ -99,7 +97,7 @@ const page = () => {
                   <div className="group flex flex-col h-full bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 font-[var(--font-geist-mono)]">
                     {/* <div className="flex flex-col mb-4 rounded-lg border border-gray-200 bg-white p-4"> */}
                     <div className="p-4 md:p-5 flex flex-col flex-grow">
-                      <div className="flex justify-between items-center mb-6">
+                      <div className="flex gap-10 items-center mb-6">
                         <div className="text-md font-semibold text-gray-800">
                           ID: {appointment.ID}
                         </div>
@@ -120,16 +118,10 @@ const page = () => {
                           <div className="text-sm text-black font-bold">
                             Customer Name
                           </div>
-                          <div className="text-sm text-gray-600 font-semibold">
-                            {appointment.customerName}
-                          </div>
-                        </div>
-                        <div className="flex flex-col ">
-                          <div className="text-sm text-black font-bold">
-                            Phone Number
-                          </div>
-                          <div className="text-sm text-gray-600 font-semibold">
-                            {appointment.phoneNo}
+                          <div className="text-sm  text-gray-600 font-semibold">
+                            {appointment.customerName
+                              ? appointment.customerName
+                              : "N/A"}
                           </div>
                         </div>
                         <div className="flex flex-col ">
@@ -137,7 +129,7 @@ const page = () => {
                             Service
                           </div>
                           <div className="text-sm text-gray-600 font-semibold">
-                            {appointment.service}
+                            {appointment.service ? appointment.service : "N/A"}
                           </div>
                         </div>
                         <div className="flex flex-col ">
@@ -145,9 +137,11 @@ const page = () => {
                             Start Time
                           </div>
                           <div className="text-sm text-gray-600 font-semibold">
-                            {formatDateWithTime(
-                              appointment.appointmentStartTime
-                            )}
+                            {appointment.appointmentStartTime
+                              ? formatDateWithTime(
+                                  appointment.appointmentStartTime
+                                )
+                              : "N/A"}
                           </div>
                         </div>
                         <div className="flex flex-col ">
@@ -155,26 +149,17 @@ const page = () => {
                             End Time
                           </div>
                           <div className="text-sm text-gray-600 font-semibold">
-                            {formatDateWithTime(appointment.appointmentEndTime)}
+                            {appointment.appointmentEndTime
+                              ? formatDateWithTime(
+                                  appointment.appointmentEndTime
+                                )
+                              : "N/A"}
                           </div>
                         </div>
                       </div>
                       <div>
-                        <button
-                          className="cursor-pointer mt-8 w-full rounded-lg bg-blue-100 py-2 text-blue-700 font-semibold transition-colors hover:bg-blue-200"
-                          onClick={() => {
-                            router.push(
-                              `/user/ai_chat/view_chat?phone=${appointment.phoneNo}&appointmentID=${appointment.ID}`
-                            );
-                          }}
-                        >
-                          Send a message
-                        </button>
-                        <button className="cursor-pointer mt-2 w-full rounded-lg bg-blue-100 py-2 text-green-700 font-semibold transition-colors hover:bg-blue-200">
-                          Complete
-                        </button>
-                        <button className="cursor-pointer mt-2 w-full rounded-lg bg-blue-100 py-2 text-red-700 font-semibold transition-colors hover:bg-blue-200">
-                          Cancel
+                        <button className="cursor-pointer mt-8 w-full rounded-lg bg-blue-100 py-2 text-blue-700 font-semibold transition-colors hover:bg-blue-200">
+                          Delete Appointment
                         </button>
                       </div>
                     </div>

@@ -1,5 +1,12 @@
 "use client";
-import { Calendar, Home, LogOut } from "lucide-react";
+import {
+  ClockAlert,
+  Home,
+  LogOut,
+  CircleX,
+  ArrowUpNarrowWide,
+  Check,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -27,17 +34,27 @@ const items = [
   {
     title: "Ongoing Appointments",
     url: "/user/appointments/ongoing_appointments",
-    icon: Calendar,
+    icon: ArrowUpNarrowWide,
   },
   {
     title: "Pending Appointments",
     url: "/user/appointments/pending_appointments",
-    icon: Calendar,
+    icon: ClockAlert,
+  },
+  {
+    title: "Completed Appointments",
+    url: "/user/appointments/completed_appointments",
+    icon: Check,
   },
   {
     title: "Cancelled Appointments",
     url: "/user/appointments/cancelled_appointments",
-    icon: Calendar,
+    icon: CircleX,
+  },
+  {
+    title: "Ai Chats",
+    url: "/user/ai_chat",
+    icon: CircleX,
   },
 ];
 

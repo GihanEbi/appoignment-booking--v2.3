@@ -13,10 +13,8 @@ type isValidTokenTypes = {
   userId?: string;
 };
 
-export async function GET(req: Request) {
-  //   --------- params data ----------
-  const { searchParams } = new URL(req.url);
-  const phoneNumber = Number(searchParams.get("phoneNumber"));
+export async function POST(req: Request) {
+  const { phoneNumber } = await req.json();
 
   // check if phoneNumber is provided
   if (!phoneNumber) {

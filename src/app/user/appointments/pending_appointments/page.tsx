@@ -1,9 +1,20 @@
 "use client";
 
-import AppointmentCard from "@/components/AppointmentCard/AppointmentCard";
 import { Loader } from "@/components/Loader/Loader";
 import { get_pending_appointment_by_user_id } from "@/routes/appointment/appointmentRoutes";
 import React, { useEffect } from "react";
+
+type Appointment = {
+  ID: string;
+  phoneNo: string;
+  appointmentStatus: string;
+  reminder: boolean;
+  userCreated: string;
+  appointmentStartTime: string;
+  appointmentEndTime: string;
+  customerName: string;
+  service: string;
+};
 
 const page = () => {
   // state for backend data
@@ -36,8 +47,39 @@ const page = () => {
       setLoading(false);
     }
   };
+
+  const formatDateWithTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "long" });
+    const year = date.getFullYear();
+
+    const getOrdinal = (n: number) => {
+      if (n > 3 && n < 21) return "th";
+      switch (n % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    };
+
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const isPM = hours >= 12;
+    hours = hours % 12 || 12;
+    const period = isPM ? "PM" : "AM";
+
+    return `${day}${getOrdinal(
+      day
+    )} ${month} ${year} - ${hours}:${minutes} ${period}`;
+  };
   return (
-    <div className="h-screen w-full rounded-2xl border border-gray-200 bg-white p-5 shadow-md">
+    <div className="min-h-screen w-full rounded-2xl border border-gray-200 bg-white p-5 shadow-md">
       <div className="flex flex-col items-center min-h-screen">
         {" "}
         {loading && (
@@ -49,11 +91,86 @@ const page = () => {
         {/* <div className="flex-col space-x-4 mt-5 sm:flex-row xs:justify-center"> */}
         <div className="flex justify-center w-full mt-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-4 ml-7">
-            {appointments.map((appointment, index) => (
-              <div key={index} className="">
-                <AppointmentCard appointment={appointment} />
+            {appointments.length > 0 ? (
+              appointments.map((appointment: Appointment, index) => (
+                <div key={index} className="">
+                  <div className="group flex flex-col h-full bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 font-[var(--font-geist-mono)]">
+                    {/* <div className="flex flex-col mb-4 rounded-lg border border-gray-200 bg-white p-4"> */}
+                    <div className="p-4 md:p-5 flex flex-col flex-grow">
+                      <div className="flex gap-10 items-center mb-6">
+                        <div className="text-md font-semibold text-gray-800">
+                          ID: {appointment.ID}
+                        </div>
+                        <div
+                          className={`text-sm ${
+                            appointment.appointmentStatus === "confirmed"
+                              ? "bg-green-500"
+                              : appointment.appointmentStatus === "pending"
+                              ? "bg-yellow-500"
+                              : "bg-red-500"
+                          } pb-1 px-2 rounded-lg text-white`}
+                        >
+                          {appointment.appointmentStatus}
+                        </div>
+                      </div>
+                      <div className="flex flex-col space-y-2">
+                        <div className="flex flex-col ">
+                          <div className="text-sm text-black font-bold">
+                            Customer Name
+                          </div>
+                          <div className="text-sm  text-gray-600 font-semibold">
+                            {appointment.customerName
+                              ? appointment.customerName
+                              : "N/A"}
+                          </div>
+                        </div>
+                        <div className="flex flex-col ">
+                          <div className="text-sm text-black font-bold">
+                            Service
+                          </div>
+                          <div className="text-sm text-gray-600 font-semibold">
+                            {appointment.service ? appointment.service : "N/A"}
+                          </div>
+                        </div>
+                        <div className="flex flex-col ">
+                          <div className="text-sm text-black font-bold">
+                            Start Time
+                          </div>
+                          <div className="text-sm text-gray-600 font-semibold">
+                            {appointment.appointmentStartTime
+                              ? formatDateWithTime(
+                                  appointment.appointmentStartTime
+                                )
+                              : "N/A"}
+                          </div>
+                        </div>
+                        <div className="flex flex-col ">
+                          <div className="text-sm text-black font-bold">
+                            End Time
+                          </div>
+                          <div className="text-sm text-gray-600 font-semibold">
+                            {appointment.appointmentEndTime
+                              ? formatDateWithTime(
+                                  appointment.appointmentEndTime
+                                )
+                              : "N/A"}
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <button className="cursor-pointer mt-8 w-full rounded-lg bg-blue-100 py-2 text-blue-700 font-semibold transition-colors hover:bg-blue-200">
+                          Send a message
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="text-gray-500 text-center col-span-4">
+                No completed appointments found.
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
