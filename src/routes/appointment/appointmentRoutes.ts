@@ -89,10 +89,14 @@ export async function send_message_to_client(
   appointmentId: string,
   message: string
 ) {
+  let dataObj = {
+    appointmentId: appointmentId,
+    message: message,
+  };
   try {
     const res = await fetch(`${commonUrl}/send_message_to_client`, {
       method: "POST",
-      body: JSON.stringify({ appointmentId, message }),
+      body: JSON.stringify(dataObj),
       headers: {
         "Content-Type": "application/json",
         token: `${getToken()}`, // Uncomment if you need to send a token
