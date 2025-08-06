@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     // add new data object to n8n chat history message array
     if (chatHistory) {
       chatHistory.messages.push({
-        type: "user",
+        type: "ai",
         data: {
           content: message,
         },
