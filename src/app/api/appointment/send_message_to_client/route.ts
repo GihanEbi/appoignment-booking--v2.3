@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     }
 
     await fetch(
-      `https://n8n.srv824466.hstgr.cloud/webhook-test/send-message-to-clinet?phoneNo=${appointment.phoneNo}&message=${message}`,
+      `https://n8n.srv824466.hstgr.cloud/webhook/send-message-to-clinet?phoneNo=${appointment.phoneNo}&message=${message}`,
       {
         method: "GET",
         headers: {
