@@ -1,4 +1,14 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from "mongoose";
+
+type availableTimeSlot = {
+  startTime: string;
+  endTime: string;
+};
+
+type timeSlots = {
+  date: string;
+  availableTime: availableTimeSlot[];
+};
 
 export interface IUser extends Document {
   ID: string;
@@ -9,10 +19,9 @@ export interface IUser extends Document {
   password: string;
   isActive?: boolean;
   userGroupId: string;
-
-  //   created user details
-  userCreated?: string;
-  userModified?: string;
+  aboutBusiness?: string;
+  detailsDocumentUrl?: string;
+  timeSlots?: timeSlots[];
 }
 
 const userSchema = new Schema<IUser>(
@@ -25,12 +34,11 @@ const userSchema = new Schema<IUser>(
     password: { type: String, required: true },
     isActive: { type: Boolean, default: true },
     userGroupId: { type: String, required: true },
-
-    //   created user details
-    userCreated: { type: String, required: false },
-    userModified: { type: String, required: false },
+    aboutBusiness: { type: String, default: "" },
+    detailsDocumentUrl: { type: String, default: "" },
+    timeSlots: { type: [Object], default: [] },
   },
   { timestamps: true }
 );
 
-export default mongoose.models.User || mongoose.model('User', userSchema);
+export default mongoose.models.User || mongoose.model("User", userSchema);

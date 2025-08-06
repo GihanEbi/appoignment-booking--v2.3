@@ -2,6 +2,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { config } from '@/config';
 import UserModel from '../../../models/UserModel';
 import { itemAvailable } from './item-available';
+import { connectDB } from '../../../lib/db';
 
 export const generateToken = (userId: string): string => {
   return jwt.sign({ userId }, config.jwtSecret, { expiresIn: '1d' });
@@ -15,6 +16,9 @@ export const CheckUserAccess = async (
   tokenString: string | null,
   accessCode: string | null
 ) => {
+  
+    //   --------- connect to database -----------
+    await connectDB();
   if (!tokenString) {
     return { success: false, message: 'Token is required', status: 401 };
   } else {
